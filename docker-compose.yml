@@ -20,8 +20,6 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-      - NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}
       - API_KEY=${API_KEY}
       - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
       - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
@@ -30,6 +28,33 @@ services:
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
     networks:
       - app-network
+  
+  nexus:
+    build: 
+      context: ./nexus
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+  
+  task-pilot-db:
+    image: postgres:15-alpine
+    container_name: task-pilot-db
+    environment:
+      POSTGRES_DB: task_pilot_db
+      POSTGRES_USER: task_pilot_db_user
+      POSTGRES_PASSWORD: task_pilot_db_password
+    volumes:
+      - task-pilot-db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U task_pilot_db_user -d task-pilot-db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
   backend:
     build: 
@@ -39,7 +64,7 @@ services:
       - "8000:8000"
     environment:
       - PORT=8000
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=postgresql://task_pilot_db_user:task_pilot_db_password@task-pilot-db:5432/task_pilot_db
       - API_KEY=${API_KEY}
       - JWT_SECRET=${JWT_SECRET}
       - SEARCH_API_BASE=${SEARCH_API_BASE}
@@ -133,3 +158,4 @@ volumes:
   caddy-data:
   caddy-config:
   valkey-data2:
+  task-pilot-db-data:
