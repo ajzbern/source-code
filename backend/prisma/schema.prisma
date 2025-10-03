@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id                     String        @id @default(uuid())
+  name                   String
+  email                  String        @unique
+  password               String        @default("")
+  role                   String        @default("admin")
+  createdAt              DateTime      @default(now())
+  projects               Project[]     @relation("AdminProjects")
+  accessToken            String        @default("")
+  subscription           Subscription?
+  subscriptionId         String?       @unique
+  remainingProjectLimit  Int           @default(0)
+  remainginEmployeeLimit Int           @default(0)
+  remainingDocumentLimit Int           @default(0)
+  remainingResearchLimit Int           @default(0)
+  dailyResearchLimit     Int           @default(0)
+  lastLimitResetDate     DateTime?     @default(now())
+}
+
+model Project {
+  id                 String     @id @default(uuid())
+  createdAt          DateTime   @default(now())
+  name               String
+  description        String?
+  projectType        String
+  complexity         String
+  updatedAt          DateTime   @updatedAt
+  completionStatus   String
+  timeEstimate       Int        @default(0)
+  employeesWorkingOn Employee[] @relation("EmployeesProjects")
+  documents          Document[] @relation("ProjectDocuments")
+  owner              Admin      @relation("AdminProjects", fields: [ownerId], references: [id])
+  ownerId            String
+  tasks              Task[]     @relation("ProjectTasks")
+  comments           Comment[]  @relation("ProjectComments")
+}
+
+model Employee {
+  id               String    @id @default(uuid())
+  name             String
+  email            String
+  contact          String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  password         String    @default("")
+  role             String
+  skills           String[]
+  githubUsername   String    @default("")
+  status           String
+  department       String    @default("")
+  employerId       String
+  projectsAssigned Project[] @relation("EmployeesProjects")
+  location         String?
+  assignedTasks    Task[]    @relation("TaskAssignees")
+  comments         Comment[] @relation("EmployeeComments")
+}
+
+model Task {
+  id                String     @id @default(uuid())
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+  due               DateTime?
+  name              String
+  description       String?
+  tag               String?
+  status            String
+  assignedEmployees Employee[] @relation("TaskAssignees")
+  priority          String
+  project           Project    @relation("ProjectTasks", fields: [projectId], references: [id])
+  projectId         String
+  ownerId           String     @default("")
+  comments          Comment[]  @relation("TaskComments")
+}
+
+model Document {
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  createdBy      String
+  ownerId        String   @default("")
+  name           String   @default("")
+  views          Int      @default(0)
+  description    String?
+  status         String
+  body           String?
+  docBody        Json?
+  docDesc        String?
+  docName        String?
+  erDiagram      String?
+  useCaseDiagram String?
+
+  project   Project @relation("ProjectDocuments", fields: [projectId], references: [id])
+  projectId String
+}
+
+model Comment {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  text        String
+  commentor   Employee @relation("EmployeeComments", fields: [commentorId], references: [id])
+  commentorId String
+  task        Task     @relation("TaskComments", fields: [taskId], references: [id])
+  taskId      String
+  project     Project  @relation("ProjectComments", fields: [projectId], references: [id])
+  projectId   String
+}
+
+model Subscription {
+  id        String   @id @default(uuid())
+  adminId   String   @unique
+  admin     Admin    @relation(fields: [adminId], references: [id])
+  planId    String
+  status    String
+  startDate DateTime @default(now())
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+}
+
+model Recordings {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  startTime DateTime
+  endTime   DateTime
+  url       String
+  callId    String
+  sessionId String
+  fileName  String
+}
