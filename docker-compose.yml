@@ -6,8 +6,8 @@ services:
       context: ./agent-service
       dockerfile: Dockerfile
     container_name: agents-service-app
-    ports:
-      - "5000:5000"
+    # ports:
+    #   - "5000:5000"
     environment:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     networks:
@@ -34,7 +34,7 @@ services:
       context: ./nexus
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3001:3000"
     networks:
       - app-network
   
@@ -60,8 +60,8 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
+    # ports:
+    #   - "8000:8000"
     environment:
       - PORT=8000
       - DATABASE_URL=postgresql://task_pilot_db_user:task_pilot_db_password@task-pilot-db:5432/task_pilot_db
@@ -128,8 +128,8 @@ services:
     restart: unless-stopped
     networks:
       - searxng
-    ports:
-      - "8080:8080"
+    # ports:
+    #   - "8080:8080"
     volumes:
       - ./searxng-docker/searxng:/etc/searxng:rw
     environment:
