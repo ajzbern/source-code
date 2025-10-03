@@ -18,7 +18,7 @@ import {
   LoginSchema,
   UpdateEmployeeSchema,
 } from "../types";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 // Environment variables should be properly set up
@@ -140,7 +140,7 @@ export const getEmployeesController = async (
   res: Response
 ): Promise<void> => {
   try {
-    var employees = await getEmployees(req.params.employerId);
+    var employees = await getEmployees(req.params.employerId!);
     res.status(200).json({
       success: true,
       message: "Employees retrieved successfully",
@@ -160,7 +160,7 @@ export const getSingleEmployeeController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const employee = await getSingleEmployee(req.params.employeeId);
+    const employee = await getSingleEmployee(req.params.employeeId!);
     res.status(200).json({
       success: true,
       message: "Employee retrieved successfully",
@@ -180,7 +180,7 @@ export const getEmployeeDashboardDataFun = async (
   res: Response
 ): Promise<void> => {
   try {
-    var employees = await getEmployeeDashboard(req.params.empolyeeId);
+    var employees = await getEmployeeDashboard(req.params.empolyeeId!);
     res.status(200).json({
       success: true,
       message: "Employees retrieved successfully",
@@ -225,7 +225,7 @@ export const updateEmployeeController = async (
   try {
     const validatedData = UpdateEmployeeSchema.parse(req.body);
     const employee = await updateEmployee(
-      req.params.employeeId,
+      req.params.employeeId!,
       validatedData.name ?? "",
       validatedData.email ?? "",
       validatedData.contact ?? "",
@@ -254,7 +254,7 @@ export const deleteEmployeeController = async (
   res: Response
 ): Promise<void> => {
   try {
-    await deleteEmployee(req.params.employeeId);
+    await deleteEmployee(req.params.employeeId!);
     res.status(200).json({
       success: true,
       message: "Employee deleted successfully",

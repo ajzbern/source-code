@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { createAdmin, login, findUserById } from "../services/user.service";
 import { CreateAdminSchema, LoginSchema } from "../types";
 import jwt from "jsonwebtoken";
@@ -216,7 +216,7 @@ export const getUserById = async (
 ): Promise<void> => {
   try {
     const userId = req.params.id;
-    const user = await findUserById(userId);
+    const user = await findUserById(userId!);
 
     if (!user) {
       res.status(404).json({

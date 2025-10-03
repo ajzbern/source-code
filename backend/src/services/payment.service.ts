@@ -355,7 +355,7 @@ export const webhookService = async (
     // Validate webhook signature
     const isValidSignature = validateWebhookSignature(
       JSON.stringify(body),
-      signature,
+      signature!,
       webhookSecret
     );
 

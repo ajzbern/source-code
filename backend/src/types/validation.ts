@@ -2,8 +2,8 @@
 // which Express expects for middleware functions
 
 // Here's how you should modify your validateRequest middleware:
-import { Request, Response, NextFunction } from "express";
-import { AnyZodObject } from "zod"; // Assuming you're using Zod for validation
+import type { Request, Response, NextFunction } from "express";
+import type { AnyZodObject } from "zod"; // Assuming you're using Zod for validation
 
 export default function validateRequest(schema: AnyZodObject) {
   return async (req: Request, res: Response, next: NextFunction) => {

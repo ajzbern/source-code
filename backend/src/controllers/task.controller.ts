@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   createTask,
   deleteTask,
@@ -47,7 +47,7 @@ export const getTasksController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const tasks = await getTasks(req.params.ownerId);
+    const tasks = await getTasks(req.params.ownerId!);
     res.status(200).json({
       success: true,
       message: "Tasks retrieved successfully",
@@ -83,7 +83,7 @@ export const updateTaskController = async (
     }
 
     const task = await updateTask(
-      req.params.taskId,
+      req.params.taskId!,
       req.body.name ?? "",
       req.body.description ?? "",
       req.body.tag ?? "",
@@ -110,7 +110,7 @@ export const getSingleTaskController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const task = await getSingleTask(req.params.taskId);
+    const task = await getSingleTask(req.params.taskId!);
     res.status(200).json({
       success: true,
       message: "Task retrieved successfully",
@@ -130,7 +130,7 @@ export const deleteTaskController = async (
   res: Response
 ): Promise<void> => {
   try {
-    await deleteTask(req.params.taskId);
+    await deleteTask(req.params.taskId!);
     res.status(200).json({
       success: true,
       message: "Task deleted successfully",

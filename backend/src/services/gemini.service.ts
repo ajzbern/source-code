@@ -16,7 +16,7 @@ const genAIClient = new GoogleGenAI({
 });
 
 // Model configuration
-const MODEL_NAME = "gemini-2.0-flash-001";
+const MODEL_NAME = "gemini-2.5-flash-lite";
 
 /**
  * Generates content using the Gemini API with a single request

@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import type { Router, Request, Response } from "express";
 import { CreateDocumentSchema, UpdateDocumentSchema } from "../types";
 import {
   createDocument,
@@ -41,7 +41,7 @@ export const getDocumentsController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const documents = await getDocuments(req.params.ownerId);
+    const documents = await getDocuments(req.params.ownerId!);
     res.status(200).json({
       success: true,
       message: "Documents retrieved successfully",
@@ -63,7 +63,7 @@ export const updateDocumentController = async (
   try {
     const validatedData = UpdateDocumentSchema.parse(req.body);
     const document = await updateDocument(
-      req.params.documentId,
+      req.params.documentId!,
       validatedData.description ?? "",
       validatedData.name ?? "",
       validatedData.status ?? "",
@@ -89,7 +89,7 @@ export const deleteDocumentController = async (
   res: Response
 ): Promise<void> => {
   try {
-    await deleteDocument(req.params.documentId);
+    await deleteDocument(req.params.documentId!);
     res.status(200).json({
       success: true,
       message: "Document deleted successfully",
@@ -108,7 +108,7 @@ export const getSingleDocumentController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const document = await getSingleDocument(req.params.documentId);
+    const document = await getSingleDocument(req.params.documentId!);
     res.status(200).json({
       success: true,
       message: "Document retrieved successfully",

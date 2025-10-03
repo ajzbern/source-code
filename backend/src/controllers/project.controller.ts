@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import {
   createProject,
   getSingleProject,
@@ -235,7 +235,7 @@ export const getProjectsController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const projects = await getProjects(req.params.ownerId);
+    const projects = await getProjects(req.params.ownerId!);
     res.status(200).json({
       success: true,
       message: "Projects retrieved successfully",
@@ -255,7 +255,7 @@ export const getDashboardDataFun = async (
   res: Response
 ): Promise<void> => {
   try {
-    const projects = await getDashboardData(req.params.ownerId);
+    const projects = await getDashboardData(req.params.ownerId!);
     res.status(200).json({
       success: true,
       message: "Projects retrieved successfully",
@@ -285,7 +285,7 @@ export const updateProjectController = async (
     }
 
     const project = await updateProject(
-      req.params.projectId,
+      req.params.projectId!,
       name,
       ownerId,
       description ?? ""
@@ -309,7 +309,7 @@ export const getProjectController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const project = await getSingleProject(req.params.projectId);
+    const project = await getSingleProject(req.params.projectId!);
     res.status(200).json({
       success: true,
       message: "Project retrieved successfully",
@@ -329,7 +329,7 @@ export const deleteProjectController = async (
   res: Response
 ): Promise<void> => {
   try {
-    await deleteProject(req.params.projectId);
+    await deleteProject(req.params.projectId!);
     res.status(200).json({
       success: true,
       message: "Project deleted successfully",

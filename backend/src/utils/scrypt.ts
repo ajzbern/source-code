@@ -36,8 +36,8 @@ export const compare = async (
   return new Promise((resolve, reject) => {
     const [salt, hashKey] = hash.split(".");
     // we need to pass buffer values to timingSafeEqual
-    const hashKeyBuff = Buffer.from(hashKey, "hex");
-    scrypt(password, salt, keyLength, (error, derivedKey) => {
+    const hashKeyBuff = Buffer.from(hashKey!, "hex");
+    scrypt(password, salt!, keyLength, (error, derivedKey) => {
       if (error) reject(error);
       // compare the new supplied password with the hashed password using timeSafeEqual
       resolve(timingSafeEqual(hashKeyBuff, derivedKey));

@@ -1,4 +1,4 @@
-import { AgentRequest } from "../types";
+import type { AgentRequest } from "../types";
 
 // const localUrl = "http://agent-service-app:5000/";
 const localUrl = "http://localhost:5001/";

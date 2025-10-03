@@ -99,7 +99,7 @@ export const createProject = async (
     },
   });
 
-  const agentResponse = await pipeline({
+  const agentResponse: any = await pipeline({
     project_name: name,
     employees: employeesMap,
     description,
@@ -110,6 +110,10 @@ export const createProject = async (
     key_features,
   });
 
+  if (!agentResponse) {
+    return Error("No response from agents");
+  }
+  
   if (
     agentResponse.description &&
     agentResponse.doc_body &&
@@ -284,7 +288,7 @@ export async function createFinalProject(
   if (!project) {
     throw new Error("Unable to create project");
   }
-  
+
   // else if (admin.subscription?.planId != "pro" && admin.remainingProjectLimit > 0) {
   //   await prisma.admin.update({
   //     where: { id: ownerId },
