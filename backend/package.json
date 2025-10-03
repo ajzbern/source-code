@@ -1,0 +1,48 @@
+{
+  "name": "backend",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun src/index.ts",
+    "start": "bun src/index.ts",
+    "build": "bun install --production"
+  },
+  "devDependencies": {
+    "@octokit/tsconfig": "^4.0.0",
+    "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/morgan": "^1.9.9"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@google/genai": "^0.8.0",
+    "@langchain/community": "^0.3.40",
+    "@langchain/core": "^0.3.44",
+    "@langchain/google-genai": "^0.2.3",
+    "@prisma/client": "^6.4.1",
+    "@tavily/core": "^0.3.7",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/express": "^5.0.0",
+    "@types/stripe": "^8.0.416",
+    "body-parser": "^2.2.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "langchain": "^0.3.21",
+    "morgan": "^1.10.0",
+    "octokit": "^4.1.2",
+    "prisma": "^6.4.1",
+    "raw-body": "^3.0.0",
+    "razorpay": "^2.9.6",
+    "resend": "^4.1.2",
+    "stripe": "^18.0.0",
+    "typescript": "^5.8.2",
+    "zod": "^3.24.2"
+  }
+}
